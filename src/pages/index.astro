@@ -1,0 +1,35 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import Nav from '../components/Navbar.astro'
+import BlogCard from '../components/BlogCard.astro'
+import { getCollection } from 'astro:content';
+import BlogPost from '../layouts/BlogPost.astro';
+
+
+const Blogs = (await getCollection('blog')).sort(
+	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body id="root" class="w-full flex flex-col h-screen items-center justify-start">
+		<div id="navbar+title" class="flex flex-col w-full gap-6 max-w-xl">
+
+		<Nav/>
+		<h1 class="text-7xl font-medium tracking-tight w-full">Hey I'm Rangesh,Product designer,engineer&web Developer</h1>
+		{  
+
+			Blogs.map((blog)=>(
+				<BlogCard title={blog.data.title} date={blog.data.pubDate} slug={blog.slug}/>
+
+			))	
+		}
+	</div>
+	</body> 
